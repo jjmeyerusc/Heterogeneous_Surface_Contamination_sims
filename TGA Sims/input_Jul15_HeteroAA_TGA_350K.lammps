@@ -1,0 +1,491 @@
+# This LAMMPS input script simulates surface tension measurement of water
+# Written by Simon Gravelle (https://simongravelle.github.io/)
+# Find more scripts here: https://github.com/simongravelle/lammps-input-files
+# LAMMPS tutorials for beginners: https://lammpstutorials.github.io/
+
+variable T equal 273.15 # temperature in Kelvin
+variable Tgold equal 73.15 # temperature in Kelvin
+variable A2m equal 1e-10 # Angstrom to meter
+variable atm2Pa equal 101325 # Atmosphere to Pascal
+variable N2mN equal 1e3 # Newton to milliNewton
+
+
+
+# -------- Define Simulation Variables (for gold and for sim box) ------
+variable fccAu equal 4.065 	# Lattice Constant for FCC Au (Gold) Lattice
+variable L0 equal ${fccAu}*13 # Added in for the larger simulation to define height of sim box (intermediate region is evaporative region)
+variable L000 equal ${fccAu}*3.5#10 # Added in for the larger simulation to define height of sim box (intermediate region is evaporative region)
+variable L1 equal ${fccAu}*4 	# # Deprecated # The + z height of the simulation box
+variable L11 equal ${fccAu}*3   # The -z height of the simulation box + lower z-boundary for bottom gold *2*3.4
+variable L2 equal ${fccAu}*1.5*3*2 	# +/- x for simulation box + size of x-direction gold cube sides # Used to be *2
+variable L4 equal ${fccAu}*1	# Height of the Gold Slab (e.g. -L4 = upper boundary)
+variable L3 equal ${fccAu}*1.5*3 	# +/- y for simulation box + gold slab
+variable L5 equal ${fccAu}*2.75  # lower z-boundary for middle gold region + dynamic_gold region / upper for bottom gold
+variable L6 equal ${fccAu}*1.75	# Upper Z-Boundary for middle-gold region / Lower for top layer
+variable LD equal ${fccAu}*1.5 # -z boundary for water molecule deposition region
+variable UD equal ${fccAu}*2.0 # +z boundary for water molecule deposiiton region
+variable UDD equal ${fccAu}*0.0 # +z boundary for water molecule deposiiton region
+
+
+# -------- Define Simulation Variables (for gold and for sim box) ------ Working Large Gold Substrate Version (Parameters saved here for future reference, but simulation times are relatively long...)
+#variable fccAu equal 4.065 	# Lattice Constant for FCC Au (Gold) Lattice
+#variable L0 equal ${fccAu}*5 # Added in for the larger simulation to define height of sim box (intermediate region is evaporative region)
+#variable L1 equal ${fccAu}*4 	# The + z height of the simulation box
+#variable L11 equal ${fccAu}*2   # The -z height of the simulation box + lower z-boundary for bottom gold
+#variable L2 equal ${fccAu}*2 	# +/- x for simulation box + size of x-direction gold cube sides
+#variable L4 equal ${fccAu}*1	# Height of the Gold Slab (e.g. -L4 = upper boundary)
+#variable L3 equal ${fccAu}*1 	# +/- y for simulation box + gold slab
+#variable L5 equal ${fccAu}*1.75  # lower z-boundary for middle gold region + dynamic_gold region / upper for bottom gold
+#variable L6 equal ${fccAu}*1.5	# Upper Z-Boundary for middle-gold region / Lower for top layer
+#variable LD equal ${fccAu}*0.5 # -z boundary for water molecule deposition region
+#variable UD equal ${fccAu}*1 # +z boundary for water molecule deposiiton region
+
+# -------- Maybe delete here??? ------------
+variable Ti equal 5.00 	# Initial temperature of the simulation (in Kelvin) 
+variable Tf equal 5.00 	# final temperature of the simulation (in Kelvin) 
+
+boundary p p p
+units metal
+atom_style full
+bond_style harmonic
+angle_style harmonic
+dihedral_style harmonic ########################################################## URGENT: CHECK THIS BEFORE PRODUCTION SIMULATIONS!!!#########################
+pair_style hybrid sw  lj/cut/tip4p/long 1 2 1 1 0.1577 12.0 eam/fs morse 12.0 lj/cut 12.0 
+improper_style harmonic
+
+kspace_style pppm/tip4p 1.0e-5 # Can use hybrid? -- for non tip4p pppm/gpu? 
+pair_modify shift yes mix arithmetic
+# This LAMMPS input script simulates surface tension measurement of water
+# Written by Simon Gravelle (https://simongravelle.github.io/)
+# Find more scripts here: https://github.com/simongravelle/lammps-input-files
+# LAMMPS tutorials for beginners: https://lammpstutorials.github.io/
+
+variable T equal 273.15 # temperature in Kelvin
+variable Tgold equal 73.15 # temperature in Kelvin
+variable A2m equal 1e-10 # Angstrom to meter
+variable atm2Pa equal 101325 # Atmosphere to Pascal
+variable N2mN equal 1e3 # Newton to milliNewton
+
+
+
+# -------- Define Simulation Variables (for gold and for sim box) ------
+variable fccAu equal 4.065 	# Lattice Constant for FCC Au (Gold) Lattice
+variable L0 equal ${fccAu}*13 # Added in for the larger simulation to define height of sim box (intermediate region is evaporative region)
+variable L000 equal ${fccAu}*3.5#10 # Added in for the larger simulation to define height of sim box (intermediate region is evaporative region)
+variable L1 equal ${fccAu}*4 	# # Deprecated # The + z height of the simulation box
+variable L11 equal ${fccAu}*3   # The -z height of the simulation box + lower z-boundary for bottom gold *2*3.4
+variable L2 equal ${fccAu}*1.5*3*2 	# +/- x for simulation box + size of x-direction gold cube sides # Used to be *2
+variable L4 equal ${fccAu}*1	# Height of the Gold Slab (e.g. -L4 = upper boundary)
+variable L3 equal ${fccAu}*1.5*3 	# +/- y for simulation box + gold slab
+variable L5 equal ${fccAu}*2.75  # lower z-boundary for middle gold region + dynamic_gold region / upper for bottom gold
+variable L6 equal ${fccAu}*1.75	# Upper Z-Boundary for middle-gold region / Lower for top layer
+variable LD equal ${fccAu}*1.5 # -z boundary for water molecule deposition region
+variable UD equal ${fccAu}*2.0 # +z boundary for water molecule deposiiton region
+variable UDD equal ${fccAu}*0.0 # +z boundary for water molecule deposiiton region
+
+
+# -------- Define Simulation Variables (for gold and for sim box) ------ Working Large Gold Substrate Version (Parameters saved here for future reference, but simulation times are relatively long...)
+#variable fccAu equal 4.065 	# Lattice Constant for FCC Au (Gold) Lattice
+#variable L0 equal ${fccAu}*5 # Added in for the larger simulation to define height of sim box (intermediate region is evaporative region)
+#variable L1 equal ${fccAu}*4 	# The + z height of the simulation box
+#variable L11 equal ${fccAu}*2   # The -z height of the simulation box + lower z-boundary for bottom gold
+#variable L2 equal ${fccAu}*2 	# +/- x for simulation box + size of x-direction gold cube sides
+#variable L4 equal ${fccAu}*1	# Height of the Gold Slab (e.g. -L4 = upper boundary)
+#variable L3 equal ${fccAu}*1 	# +/- y for simulation box + gold slab
+#variable L5 equal ${fccAu}*1.75  # lower z-boundary for middle gold region + dynamic_gold region / upper for bottom gold
+#variable L6 equal ${fccAu}*1.5	# Upper Z-Boundary for middle-gold region / Lower for top layer
+#variable LD equal ${fccAu}*0.5 # -z boundary for water molecule deposition region
+#variable UD equal ${fccAu}*1 # +z boundary for water molecule deposiiton region
+
+# -------- Maybe delete here??? ------------
+variable Ti equal 5.00 	# Initial temperature of the simulation (in Kelvin) 
+variable Tf equal 5.00 	# final temperature of the simulation (in Kelvin) 
+
+boundary p p p
+units metal
+atom_style full
+bond_style harmonic
+angle_style harmonic
+dihedral_style harmonic ########################################################## URGENT: CHECK THIS BEFORE PRODUCTION SIMULATIONS!!!#########################
+pair_style hybrid sw  lj/cut/tip4p/long 1 2 1 1 0.1577 12.0 eam/fs morse 12.0 lj/cut 12.0 
+kspace_style pppm/tip4p 1.0e-5 # Can use hybrid? -- for non tip4p pppm/gpu? 
+pair_modify shift yes mix arithmetic
+
+#lattice sc 3.4
+region box block -${L2} ${L2} -${L3} ${L3} -${L11} ${L0}
+region fluid block -3 3 -3 3 -3 3
+region depositionregion block -${L2} ${L2} -${L3} ${L3} 34.5 34.6
+region depositionregion2 block -${L2} ${L2} -${L3} ${L3} 33.5 35.75
+region above_depositionregion block -${L2} ${L2} -${L3} ${L3} 24.5 27.6
+#region freeze_region block -${L2} ${L2} -${L3} ${L3} 50 ${L0}
+region cube block -${L2} ${L2} -${L3} ${L3} -${L11} -${L4} # Gold
+# Define the bottom layer of the gold atoms (to fix)
+region cube_bottomHalf block -${L2} ${L2} -${L3} ${L3} -${L11} -${L5}
+# Thermostat/Heat-Bath the middle 1-2 layers of Gold Atoms
+region middlegold block -${L2} ${L2} -${L3} ${L3} -${L5} -${L6}
+
+region ljwall block -${L2} ${L2} -${L3} ${L3} ${UDD} ${L000}
+
+# Define the exit region (e.g. where the molecules will leave the system if they enter it) 
+region exitregion block -${L2} ${L2} -${L3} ${L3} 38 ${L0}
+
+
+read_data Jul11_Hetero1_MoreMols_Restart_FIXED.data &
+    extra/bond/per/atom 200 &
+    extra/angle/per/atom 200 &
+    extra/dihedral/per/atom 200 &
+    extra/special/per/atom 200 &
+    extra/improper/per/atom 8
+
+include PARM.lammps
+
+# ------------ Spawn Water Molecules ----------
+
+molecule h2omol tip4p-ice.mol
+#create_atoms 0 region fluid mol h2omol 482793
+#create_atoms 0 random 1 12345 depositionregion mol h2omol 25367 #overlap 5.83
+
+# ------------ Spawn Methane (CH4) Molecules -------------
+
+#include MethaneCH4.parm
+molecule CH4mol MethaneCH4.mol
+#create_atoms 0 random 22 12345 depositionregion mol CH4mol 23212 #overlap 5.44
+
+# ------------ Spawn Nitrogen (N2) Molecules -------------
+
+#include N2.parm
+molecule N2mol N2.mol
+#create_atoms 0 random 1 12345 depositionregion mol N2mol 23212 #overlap 5.44
+
+# ------------ Spawn "Fake" Atoms to simulate reflective Boundary LJ Wall on top -----
+
+#lattice sc 1.0
+#create_atoms 7 region ljwall # Assign them a unique atom type
+#lattice none 1.0
+
+#group dummy_atoms type 7
+#fix freeze_dummy dummy_atoms setforce 0.0 0.0 0.0
+
+# ------------------ Spawn Gold Surface/Substrate -----------------
+
+# Gold Atoms
+#lattice fcc ${fccAu} #4.065
+#create_atoms 3 region cube 	# place atoms on lattice
+#lattice none 1.0 		# What does this do again? Make sure to check...
+
+# ------------ Spawn/Initialize PEG (C28H58O15, PEG 600) Molecules -------------
+
+#special_bonds lj/coul 0.0 0.0 0.5
+
+#include GROMOS.parm
+molecule PEG600mol PEG600.mol
+#create_atoms 0 random 1 12345 above_depositionregion mol PEG600mol 23212 #overlap 5.44
+#group peg type 9 10 11 12 13 14
+
+#group PEG_atoms region above_depositionregion
+#group PEG_atoms include molecule
+
+#velocity PEG_atoms create ${T} 4928459 mom yes rot yes dist gaussian loop geom
+#velocity PEG_atoms create ${T} 987654 mom yes rot yes dist gaussian loop geom
+#min_style cg
+#minimize 1e-4 1e-6 100 10000
+#run 0
+
+# ------------ Spawn/Initialize Tuolene (C7H8) Molecules -------------
+
+#special_bonds lj/coul 0.0 0.0 0.5
+
+#include GROMOS.parm
+molecule TuoleneMol Tuolene.mol
+#create_atoms 0 random 1 12345 above_depositionregion mol TuoleneMol 23212 overlap 5.44
+#group peg type 9 10 11 12 13 14
+
+group Tuolenes region above_depositionregion
+group Tuolenes include molecule
+
+#velocity Tuolenes create ${T} 4928459 mom yes rot yes dist gaussian loop geom
+#velocity Tuolenes create ${T} 987654 mom yes rot yes dist gaussian loop geom
+#min_style cg
+#minimize 1e-4 1e-6 100 10000
+#run 0
+
+# ------------ Spawn/Initialize Decane (C10H22) Molecules -------------
+
+#special_bonds lj/coul 0.0 0.0 0.5
+
+#include GROMOS.parm
+molecule DecaneMol Decane.mol
+#create_atoms 0 random 1 12345 above_depositionregion mol DecaneMol 23212 overlap 5.44
+#group peg type 9 10 11 12 13 14
+
+group Decanes region above_depositionregion
+group Decanes include molecule
+
+#velocity Decanes create ${T} 4928459 mom yes rot yes dist gaussian loop geom
+#velocity Decanes create ${T} 987654 mom yes rot yes dist gaussian loop geom
+#min_style cg
+#minimize 1e-4 1e-6 100 10000
+#run 0
+
+
+#fix		55 all deposit 2 0 5000 12345 region fluid near 1.33 &
+                mol h2omol vz -0.001 -0.001 
+ 
+# Define groups for water molecules in different regions
+group fluidWater region fluid
+group depositionWater region depositionregion2
+group depositionWater include molecule
+
+group		bottomGold region cube_bottomHalf
+#group nonfixed region nonfixed
+group gold type 3
+group cube region cube
+#group nonfixed_gold region nonfixed_gold
+
+# Group (command) to group the Gold Atoms (By Atom Type, NOT region)
+group gold_substrate type 3
+
+# Group methane 
+group           CH4 type 4  5
+
+# Group nitrogen 
+group N2 type 6
+
+# Group to represent only the dynamic part of the gold substrate
+group dynamic_gold subtract gold_substrate bottomGold
+
+# Compute temperature only for the dynamic gold atoms (Exclude the stationary/fixed bottom gold atoms from messing up the temperature output)
+compute dyn_temp dynamic_gold temp
+
+# Define the region where the water molecules will appear (top half of the sim box here)
+region          slab block -${L2} ${L2} -${L3} ${L3} ${LD} ${UD}
+
+region mobile block -${L2} ${L2} -${L3} ${L3} -${L5} ${UD} # Make everything except for bottom layer of Gold mobile
+group mobile region mobile
+
+group middlegold region middlegold
+
+group top_gold subtract dynamic_gold middlegold
+compute top_temp top_gold temp
+
+# freeze bottom layer of gold atoms
+#fix freeze_gold bottomGold setforce 0.0 0.0 0.0
+
+# Group the water molecules together 
+group watermolecules type 1 2
+
+# Count atoms in the depositionWater group
+variable num_depositionWater equal count(depositionWater)
+print "Number of atoms in depositionWater group = ${num_depositionWater}"
+print "L2 = ${L2}"
+print "L3 = ${L3}"
+
+# ---------------------------------------------------
+# -------------------dynamics------------------------
+# ---------------------------------------------------
+
+#velocity depositionWater create ${T} 4928459 mom no rot yes dist gaussian # Here, "depositionWater" is legacy for when the simulation only included water being spawned and deposited, but now includes all molecules deposited into this region
+
+fix mynve1 all nve #IMPORTANT!
+
+fix mylan_new middlegold langevin ${Tgold} ${Tgold} 0.001 740924 
+##### fix freeze_gold_test middlegold setforce 0.0 0.0 0.0 ### FOR DEBUGGING PURPOSES ONLY - To confirm which atoms are middlegold
+group rigidmolecules type 1 2 6  # Type 1, 2 for water (O, H), and 6 for nitrogen
+fix myshk rigidmolecules shake 1.0e-5 200 0 b 1 2 a 1 mol h2omol mol N2mol
+
+timestep 0.0015 # 0.002 = 2.0 femtoseconds
+# freeze bottom layer of gold atoms
+fix freeze_gold bottomGold setforce 0.0 0.0 0.0
+
+group watermoleculess type 1 2
+compute h20temp watermoleculess temp
+compute_modify h20temp dynamic/dof yes
+
+dump 100 all xyz 1000 xyzdata_Jul17_HeteroAA_TGA_350K.xyz
+
+#dump mydump22 all custom 1000 xyzdata_Jul8_sandwich_firstTGAvxvyvz.xyz id type x y z vx vy vz
+
+
+# output and run
+# first : generate the outgassing molecules and let them deposit onto the substrate
+thermo 1000
+thermo_style custom step temp c_h20temp c_dyn_temp c_top_temp epair etotal press # c_total_pe c_pair_energy
+
+# ---- New Stuff! -----
+
+# Define a group for the water molecule based on the region
+group waterMolecule dynamic all region depositionregion every 1
+# Use the include molecule option to add full molecules if any atom is within the region
+group waterMoleculeee include molecule
+
+# Compute the z-component of velocity
+#compute myVelZ waterMolecule property/atom vz
+
+# Run 0 to compute the velocity without advancing the simulation
+run 0
+
+# Assign negative z-velocity
+# Get the current velocity and then set it to negative
+#variable vz equal abs(c_myVelZ[1])  # Access the first atom's z-velocity
+#variable vz2 equal abs(c_myVelZ[2])  # Access the first atom's z-velocity
+#variable vz3 equal abs(c_myVelZ[3])  # Access the first atom's z-velocity
+
+# Define a new variable for the negative z-velocity
+#variable neg_vz equal -${vz} 
+
+# Set the z-velocity to negative of current
+#velocity waterMolecule set NULL NULL 2 #${neg_vz}
+
+# Print the value of neg_vz
+#print "The value of neg_vz is ${neg_vz}"
+# Print the value of neg_vz
+#print "The value of neg_vz is ${vz2}"
+# Print the value of neg_vz
+#print "The value of neg_vz is ${vz3}"
+
+# --- Delete this section if not doing mW water simulations!! ----
+
+#group water_mols type 1 2
+#fix evaporate_water water_mols evaporate 1 1 depositionregion 12345 molecule yes
+
+# --- DELETE THIS SECTION IF NOT DOING mW WATER SIMULATIONS!! ----
+
+# Define the exit region (e.g. where the molecules will leave the system if they enter it) 
+#region exitregion block -${L2} ${L2} -${L3} ${L3} 100 ${L0}
+
+
+# Define the exit region (e.g. where the molecules will leave the system if they enter it) 
+#region exitregion block -${L2} ${L2} -${L3} ${L3} 8.8 ${L0}
+
+# Group (dynamically) all molecules in the region at that timestep
+group exiting_particles dynamic all region exitregion every 1
+group exiting_particles region exitregion
+group exiting_particles include molecule
+
+
+#fix reflect_molecules exiting_particles setforce NULL NULL -1 # region exitregion # exiting_particles
+# Apply an additional force of -1 in the z-direction to the exiting_particles group
+# fix reflect_molecules exiting_particles addforce 0 0 -1 # Don't want this for TGA sims, only deposition sims! 
+
+
+## Define a variable for the loop counter
+#variable lll loop 20000
+#label loop_start_0  # Start of the loop
+#run 1
+#unfix reflect_molecules
+#group exiting_particles delete
+#group exiting_particles region exitregion 
+#group exiting_particles include molecule
+#fix reflect_molecules exiting_particles addforce 0 0 -1
+## Move to the next iteration
+#next lll
+## Jump back to the loop start, if the loop isn't finished
+#jump SELF loop_start_0
+
+
+#group exiting_particles include molecule
+run 1000 #10000000 #1200000
+
+compute mdtemp CH4 temp
+compute_modify mdtemp dynamic/dof yes
+compute TempEdit CH4 temp
+compute_modify TempEdit dynamic/dof yes
+#compute_modify myVelZ dynamic/dof yes
+
+compute n2temp N2 temp
+compute_modify n2temp dynamic/dof yes
+
+#group watermoleculess type 1 2
+#compute mdtemp watermoleculess temp
+#compute_modify h20temp dynamic/dof yes
+
+compute per_atom_pe all pe/atom # Potential Energy for each atom dumped every 10
+compute pair_energy watermolecules group/group gold_substrate # Pair energy for water and gold
+
+# Compute total per-atom potential energy
+compute total_pe all reduce sum c_per_atom_pe
+
+# Thermo output
+thermo_style custom step temp c_h20temp c_mdtemp c_n2temp c_dyn_temp c_top_temp epair etotal press # c_total_pe c_pair_energy
+thermo 100
+
+#unfix mylan1
+
+#create_atoms 0 random 100 12345 depositionregion mol h2omol 25367 #overlap 5.0
+
+#unfix mynve1
+#fix mynve all nve
+
+#region depositionregion delete
+
+#fix evaporate_all all evaporate 1 1000 exitregion 12345 molecule yes
+#fix evaporate_CH4 CH4 evaporate 1 1000 exitregion 12354 molecule yes
+#fix evaporate_water watermolecules evaporate 1 1000 exitregion 29184 molecule yes # Florentine Chicken Pasta Bake
+#fix evaporate_pasta N2 evaporate 1 1000 exitregion 89222 molecule yes
+
+# longer run for surface tension measurement
+#run 5000
+
+#uncompute myVelZ
+
+
+
+# Define the 'others' group that includes everything except for most recently deposited (depositionWater) here
+group all_atoms region box 
+variable num_atoms equal count(all_atoms)
+print "Number of atoms in all_atoms group = ${num_atoms}"
+group others subtract all_atoms depositionWater
+
+# This is the one fix evaporate command that works but i'll comment it out for the sped up run 1000 timestep simulations
+#######fix evaporate_all others evaporate 1 1000 depositionregion2 12345 molecule yes # Florentine Chicken Pasta Bake
+
+
+
+
+
+## LOOPS ALL DELETED since this is TGA code, not deposition code
+
+run 10000 # Let existing molecules settle a bit 
+
+# Define the exit region (e.g. where the molecules will leave the system if they enter it) 
+# region exitregion block -${L2} ${L2} -${L3} ${L3} 15 ${L0} # Already defined above, actually... 
+
+# Evaporate only works with "groups" not "molecule types" so we'll define the groups here:
+group h2omol_group type 1 2 # Oxygen, Hydrogen
+group CH4mol_group type 4 5 # 
+# group DecaneMol_group  # Same as CH4 I think 
+#group PEG600mol_group type # not used here
+# group TuoleneMol_group type # Same as CH4 I think 
+group N2mol_group type 6
+
+# 
+fix evaporate_water h2omol_group evaporate 1 1 exitregion 12345 molecule yes
+fix evaporate_CH4 CH4mol_group evaporate 1 1 exitregion 12345 molecule yes
+#fix evaporate_Decanes DecaneMol_group evaporate 1 1 exitregion 12345 molecule yes
+#fix evaporate_PEGs PEG600mol_group evaporate 1 1 exitregion 12345 molecule yes
+#fix evaporate_Tuolenes TuoleneMol_group evaporate 1 1 exitregion 12345 molecule yes
+fix evaporate_nitrogen N2mol_group evaporate 1 1 exitregion 12345 molecule yes
+
+unfix mylan_new 
+#fix mylan_new all temp/berendsen 73.15 500.15 0.005 #740924
+#fix mylan_new middlegold temp/berendsen 750.0 750.0 0.005 # 740924
+fix mylan_new all temp/berendsen ${Tgold} 350.0 0.05 # 740924
+#########fix pressfix all press/berendsen iso 1.3158e-9 1.3158e-9 0.005
+
+# freeze bottom layer of gold atoms
+unfix freeze_gold
+fix freeze_gold bottomGold setforce 0.0 0.0 0.0
+
+# Optional command to delete any atoms above the substrate region / deposited particles 
+
+run 700000
+
+unfix mylan_new
+fix mylan_new all temp/berendsen 350.0 350.0 0.005 # 740924
+
+run 20000000
+
+#run 5000000
+
+run 2000000
+

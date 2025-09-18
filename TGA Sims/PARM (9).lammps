@@ -1,0 +1,312 @@
+# --- TIP4P/2005 force field Parameters ---
+
+# From https://docs.lammps.org/Howto_tip4p.html (TIP4P/Ice Section)
+
+mass 1 15.9994 # oxygen
+mass 2 1.008 # hydrogen
+
+pair_coeff 1 1 lj/cut/tip4p/long 0.009142890072 3.1668 		# Oxygen-Oxygen, TIP4P/Ice
+pair_coeff 2 2 lj/cut/tip4p/long 0 1.0				# Hydrogen-Hydrogen, TIP4P/Ice
+
+pair_coeff 1 2 lj/cut/tip4p/long 0 1.0				# OH Bond, TIP4P/Ice
+
+bond_coeff 1 0 0.9572 						# r_0 of OH Bond, TIP4P/Ice
+angle_coeff 1 0 104.52 						# theta_0 of HOH Angle, TIP4P/Ice
+
+# -- Gold (Added on) --
+
+# From the following link/paper, which optimized gold for accurate simulations with biomolecular force fields (including OPLS)
+
+mass 3 196.967 # Gold (Au)
+
+pair_coeff * * eam/fs FeAu-eam-LJ.fs NULL NULL Au NULL NULL NULL NULL NULL NULL NULL NULL NULL NULL NULL
+
+variable fccAu equal 4.065 	# Lattice Constant for FCC Au (Gold) Lattice
+# pair_coeff 3 3 lj/cut/coul/cut 0.2294 2.951 # Gold-Gold 12-6 LJ Potential Parameters (in eV and Angstroms)
+
+# -- Gold-Water --
+
+pair_coeff 1 3 morse 0.019278 0.905 4.2   # Au-O
+pair_coeff 2 3 morse 0.00082914 1.41 4.14   # Au-H
+
+# ---- Methane -----
+
+# Source: (OPLAA-UA from https://www.researchgate.net/publication/362678847_All-Atom_Molecular_Dynamics_of_Pure_Water-Methane_Gas_Hydrate_Systems_under_Pre-Nucleation_Conditions_A_Direct_Comparison_between_Experiments_and_Simulations_of_Transport_Properties_for_the_Tip4pIce_W) 
+
+#pair_coeff 4 4 lj/cut 0.00286203 3.5
+#pair_coeff 4 5 lj/cut 0.0 0.0 
+#pair_coeff 5 5 lj/cut 0.00130092 2.5
+
+# -- Methane-Water and Methane-Gold --
+
+#pair_coeff 1 1 lj/cut/tip4p/long 0.009142890072 3.1668	#O-O
+#pair_coeff 2 2 lj/cut/tip4p/long 0 0			#H-H
+#pair_coeff 3 3 lj/cut/coul/cut 0.2294 2.951 # Gold-Gold 12-6 LJ Potential Parameters (in eV and Angstroms)
+#pair_coeff 4 4 lj/cut 0.00286203 3.5 		#C-C
+#pair_coeff 4 5 lj/cut 0.0 0.0 			#C-H
+#pair_coeff 5 5 lj/cut 0.00130092 2.5 		#H-H
+#pair_coeff 6 6 lj/cut 0.0061527 3.798 # N-N eV and Angstroms
+# pair_coeff 7 7 lj/cut 0.0061527 1.0 1.122462 # Dummy Atoms; Cross-coefficients already set below
+#pair_coeff 8 8 0.0116381046 2.67908566492 # mW-mW "LJ" Parameters (to use for hybrid potentials w/Lorentz-Bertehelot mixing rules...) 
+
+# Methane Carbon - everything Else
+
+pair_coeff 1 4 lj/cut/tip4p/long 0.00511539105 3.3334
+pair_coeff 2 4 lj/cut/tip4p/long 0.0 2.25
+pair_coeff 3 4 lj/cut/tip4p/long 0.02562322544 3.2255
+
+#Methane Hydrogen - Everything Else
+
+pair_coeff 1 5 lj/cut/tip4p/long 0.00344879233 2.8334
+pair_coeff 2 5 lj/cut/tip4p/long 0.0 1.75
+pair_coeff 3 5 lj/cut/tip4p/long 0.01727515696 2.7255
+
+# -- Nitrogen-Water --
+
+pair_coeff 1 6 lj/cut 0.00750023064 3.4824 # O-N
+pair_coeff 2 6 lj/cut 0 2.399
+
+# -- Nitrogen-Gold --
+
+pair_coeff 3 6 lj/cut 0.03756899492 3.3745
+
+# -- Nitrogen-Methane --
+
+pair_coeff 4 6 lj/cut/tip4p/long 0.00419633315 3.649
+pair_coeff 5 6 lj/cut/tip4p/long 0.00282916427 3.149
+
+# -- Dummy Atoms / LJ Walls with everything else --
+
+mass 7 1e-10
+
+pair_coeff 7 8 lj/cut 0.001 1.0 1.122462
+pair_coeff 7 7 lj/cut 0.001 1.0 1.122462
+pair_coeff 6 7 lj/cut 0.001 1.0 1.122462
+pair_coeff 5 7 lj/cut 0.001 1.0 1.122462
+pair_coeff 4 7 lj/cut 0.001 1.0 1.122462
+pair_coeff 3 7 lj/cut 0.001 1.0 1.122462
+pair_coeff 2 7 lj/cut 0.001 1.0 1.122462
+pair_coeff 1 7 lj/cut 0.001 1.0 1.122462
+
+
+
+
+
+
+
+
+
+
+
+# --------------------- PARAMETER Files (All Combined here) ------------------------
+
+
+
+# --------- N2.parm ---------
+
+# LAMMPS parameter file 
+# Created using atb2lammps 
+# https://github.com/simongravelle/atb2lammps
+
+mass 6 14.0067 
+
+pair_coeff 6 6 lj/cut 0.0061527 3.798 # eV and Angstroms
+
+bond_coeff 2 0 1.1 # Make sure to convert units from Real to Metal, if needed! 
+# Also, this value (77.7320413) is HUGE!!! The N=N Triple-bond is one of the strongest bonds in nature, which reflects the significant energy required to stretch or compress this strong triple-bond, which is much stronger than singe or double bonds commonly found in other molecules. 
+# Update: Converted the nitrogen molecules to rigid, so I made the bond value zero so that I can have a larger timestep 
+
+
+
+
+
+
+# --------- MethaneCH4.parm ------------
+
+# LAMMPS parameter file 
+
+mass 4 12.011 
+mass 5 1.008 
+
+pair_coeff 4 4 lj/cut 0.00286203 3.5
+pair_coeff 4 5 lj/cut 0.0 0.0 
+pair_coeff 5 5 lj/cut 0.00130092 2.5 
+
+
+# Bond and angle coefficient values from methane-tip4p water paper mentioned above:
+# Created using atb2lammps 
+# https://github.com/simongravelle/atb2lammps
+
+bond_coeff 3 15.14596408 1.094 # Make sure to convert units from Real to Metal, if needed! 
+
+angle_coeff 2 2.05900061 109.5 # Make sure to convert units from Real to Metal, if needed!
+
+
+
+
+# ---------- mW.parm - parameters for mW model of water -------------
+
+mass 8 18.015 # mass of simplified "United-Atom" mW model of H2O
+
+pair_coeff * * sw mW.sw NULL NULL NULL NULL NULL NULL NULL mW NULL NULL NULL NULL NULL NULL
+
+# pair_coeff 1 1 lj/cut/coul/cut 0.187593 3.000                # Gold-Gold 12-6 LJ Potential Parameters (in eV and Angstroms)
+
+# Hybrid Potentials with mW Water model (using Lorentz-Berthelot Mixing Rules!) 
+pair_coeff 1 8 lj/cut 0 0 # Oxygen-mW
+pair_coeff 2 8 lj/cut 0 0 # TIP4P Hydrogen-mW
+pair_coeff 3 8 lj/cut 0.0996155523 2.67908566492 # Gold-Mw
+pair_coeff 4 8 lj/cut 0.00577136071 3.29477141623 # Methane C-mW
+pair_coeff 5 8 lj/cut 0.00389104652 2.79477141623 # Methane H-mW
+pair_coeff 6 8 lj/cut 0.00846201903 3.119632387 # Nitrogen-mW
+pair_coeff 7 8 lj/cut 0 0 # Dummy Atoms-mW
+#pair_coeff 8 8 0.0116381046 3.08954283246 # mW-mW "LJ" Parameters (to use for hybrid potentials w/Lorentz-Bertehelot mixing rules...) 
+
+# Advanced Space Social Media Intern Position -- what if every space company starts hiring this now? - Could be an opportunity. 
+# Especially for these small startups in particular, it could be a great avenue for attracting the best talent. Both in discovery, and also in hyping up what they do. 
+
+# ----------- PEG MOLECULE STUFF -------------
+
+mass 9 15.9994 # 1-->9
+mass 10 12.011 # 2-->10
+mass 11 1.008 # 3-->11
+mass 12 1.008 # 4-->12
+mass 13 12.011 # 5-->13
+mass 14 15.9994 # 6-->14
+
+pair_coeff 9 9 lj/cut 0.010956222564 2.8491607 
+pair_coeff 9 10 lj/cut 0.0056125151051 3.1942692 
+pair_coeff 10 10 lj/cut 0.0028751080594 3.5811794 
+pair_coeff 9 11 lj/cut 0.0036664042936 2.6004272 
+pair_coeff 10 11 lj/cut 0.0018781791904 2.9154074 
+pair_coeff 11 11 lj/cut 0.001226930358665 2.373408 
+pair_coeff 9 12 lj/cut 0.0 0.0 
+pair_coeff 10 12 lj/cut 0.0 0.0 
+pair_coeff 11 12 lj/cut 0.0 0.0 
+pair_coeff 12 12 lj/cut 0.0 0.0 
+pair_coeff 9 13 lj/cut 0.010789339235 2.8302386 
+pair_coeff 10 13 lj/cut 0.0055270262209 3.1730552 
+pair_coeff 11 13 lj/cut 0.00361055868493 2.583157 
+pair_coeff 12 13 lj/cut 0.0 0.0 
+pair_coeff 13 13 lj/cut 0.0106249987785 2.8114421 
+pair_coeff 9 14 lj/cut 0.00675495616579 3.026553 
+pair_coeff 10 14 lj/cut 0.004404095543 3.259467 
+pair_coeff 11 14 lj/cut 0.0028769983011 2.6535041 
+pair_coeff 12 14 lj/cut 0.0 0.0 
+pair_coeff 13 14 lj/cut 0.0084663088345 2.8880062 
+pair_coeff 14 14 lj/cut 0.005181887758 3.1000042 
+
+bond_coeff 4 48.10349222 1.12 
+bond_coeff 5 17.33661034 1.43 
+bond_coeff 6 13.00246806 1.52 
+bond_coeff 7 17.3471335 1.53 
+bond_coeff 8 13.47355412 1.41 
+bond_coeff 9 7.77320413 0.971 
+
+angle_coeff 3 2.06821028 109.5 
+angle_coeff 4 2.39054009 109.5 
+angle_coeff 5 2.065647725 109.6 
+angle_coeff 6 2.389965818 111.0 
+angle_coeff 7 2.38472726 110.3 
+angle_coeff 8 7.825496488 109.0 
+angle_coeff 9 1.308431175 110.0 
+
+dihedral_coeff 1 0.013058982773 1 3 
+dihedral_coeff 2 0.0613564938 1 3 
+dihedral_coeff 3 0.010364272035 -1 3 
+dihedral_coeff 4 0.0 1 1 
+
+# Cross-Terms: 
+pair_coeff 1 9 lj/cut 0.01000857325 3.00798035
+pair_coeff 2 9 lj/cut 0 1.92458035
+pair_coeff 3 9 lj/cut 0.05013339661 2.90008035
+pair_coeff 4 9 lj/cut 0.005599735499 3.17458035
+pair_coeff 5 9 lj/cut 0 1.42458035
+pair_coeff 6 9 lj/cut 0.003775336946 2.67458035
+pair_coeff 7 9 lj/cut 0.003310018514 1.92458035
+pair_coeff 8 9 lj/cut 0.01129201772 2.969351766
+
+pair_coeff 1 10 lj/cut 0.005127065138 3.3739897
+pair_coeff 2 10 lj/cut 0 2.2905897
+pair_coeff 3 10 lj/cut 0.02568170144 3.2660897
+pair_coeff 4 10 lj/cut 0.002868561576 3.5405897
+pair_coeff 5 10 lj/cut 0 1.7905897
+pair_coeff 6 10 lj/cut 0.001933981793 3.0405897
+pair_coeff 7 10 lj/cut 0.00169561436 2.2905897
+pair_coeff 8 10 lj/cut 0.005784531816 3.335361116
+
+pair_coeff 1 11 lj/cut 0.003349281923 2.770104
+pair_coeff 2 11 lj/cut 0 1.686704
+pair_coeff 3 11 lj/cut 0.01677670481 2.662204
+pair_coeff 4 11 lj/cut 0.001873902744 2.936704
+pair_coeff 5 11 lj/cut 0 1.186704
+pair_coeff 6 11 lj/cut 0.001263383648 2.436704
+pair_coeff 7 11 lj/cut 0.001107668885 1.686704
+pair_coeff 8 11 lj/cut 0.003778775444 2.731475416
+
+pair_coeff 1 12 lj/cut 0 0
+pair_coeff 2 12 lj/cut 0 0
+pair_coeff 3 12 lj/cut 0 0
+pair_coeff 4 12 lj/cut 0 0
+pair_coeff 5 12 lj/cut 0 0
+pair_coeff 6 12 lj/cut 0 0
+pair_coeff 7 12 lj/cut 0 0
+pair_coeff 8 12 lj/cut 0 0
+
+pair_coeff 1 13 lj/cut 0.009856124789 2.98912105
+pair_coeff 2 13 lj/cut 0 1.90572105
+pair_coeff 3 13 lj/cut 0.04936977537 2.88122105
+pair_coeff 4 13 lj/cut 0.005514441518 3.15572105
+pair_coeff 5 13 lj/cut 0 1.40572105 
+pair_coeff 6 13 lj/cut 0.003717831816 2.65572105
+pair_coeff 7 13 lj/cut 0.003259601015 1.90572105
+pair_coeff 8 13 lj/cut 0.01112002011 2.950492466
+
+pair_coeff 1 14 lj/cut 0.00688312648 3.1334021
+pair_coeff 2 14 lj/cut 0 2.0500021
+pair_coeff 3 14 lj/cut 0.03447789222 3.0255021
+pair_coeff 4 14 lj/cut 0.003851067153 3.3000021
+pair_coeff 5 14 lj/cut 0 1.5500021
+pair_coeff 6 14 lj/cut 0.002596386224 2.8000021
+pair_coeff 7 14 lj/cut 0.002276376014 2.0500021
+pair_coeff 8 14 lj/cut 0.007765780821 3.094773516
+
+# --- Tuolene ----
+
+## Masses ---> 1/3 = Carbon (4), Mass 2 = Hydrogen (6)
+#(Reusing same atom types as other Hydrocarbons + same OPLS AA Parameters)
+
+bond_coeff 10 15.14596408 1.09 # 1->10
+bond_coeff 11 17.34148534 1.39 # 2->11
+bond_coeff 12 17.34813392 1.4 # 3->12
+bond_coeff 13 13.00246806 1.52 # 4->13
+bond_coeff 14 0.0 0.0 # 5->14
+
+angle_coeff 10 2.17561626 108.0 # 1->10
+angle_coeff 11 1.959499742 120.0 # 2->11
+angle_coeff 12 2.17326332 120.0 # 3->12
+angle_coeff 13 2.3860411 111.4 # 4->13
+
+dihedral_coeff 5 0.433226549 -1 2 # 1->5
+dihedral_coeff 6 0.010364272035 1 6 # 2->6
+dihedral_coeff 7 0.0 1 1 # 3->7
+
+improper_style harmonic # Check this before final production sims!!!
+
+improper_coeff 1 0.8676094451 0.0 
+
+# ----- Decane -----
+
+bond_coeff 15 15.14596408 1.09 
+bond_coeff 16 17.3471335 1.53 
+bond_coeff 17 15.17433028 1.1 
+
+angle_coeff 14 2.065647725 109.6 
+angle_coeff 15 2.389965818 111.0 
+angle_coeff 16 2.275607318 107.57 
+angle_coeff 17 2.386097 106.75 
+angle_coeff 18 2.059877696 108.53 
+angle_coeff 19 2.05900061 109.5 
+
+dihedral_coeff 8 0.0613564938 1 3 
+dihedral_coeff 9 0.0 1 1 
